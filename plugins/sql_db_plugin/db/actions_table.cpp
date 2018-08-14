@@ -29,7 +29,7 @@ void actions_table::create()
             "account VARCHAR(12),"
             "transaction_id VARCHAR(64),"
             "seq SMALLINT,"
-            "parent INT DEFAULT NULL,"
+            "parent_id INT DEFAULT NULL,"
             "name VARCHAR(12),"
             "created_at DATETIME DEFAULT NOW(),"
             "data JSON, FOREIGN KEY (transaction_id) REFERENCES transactions(id) ON DELETE CASCADE,"
