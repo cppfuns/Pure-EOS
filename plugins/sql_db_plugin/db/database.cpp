@@ -48,16 +48,17 @@ database::consume(const std::vector<chain::block_state_ptr> &blocks)
 void
 database::wipe()
 {
+    ilog("wipe()");
     try {
         *m_session << "SET foreign_key_checks = 0;";
-
+        ilog("drop");
         m_actions_table->drop();
         m_transactions_table->drop();
         m_blocks_table->drop();
         m_accounts_table->drop();
 
         *m_session << "SET foreign_key_checks = 1;";
-
+        ilog("create");
         m_accounts_table->create();
         m_blocks_table->create();
         m_transactions_table->create();
