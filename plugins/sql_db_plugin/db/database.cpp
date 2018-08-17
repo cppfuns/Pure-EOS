@@ -48,21 +48,25 @@ database::consume(const std::vector<chain::block_state_ptr> &blocks)
 void
 database::wipe()
 {
-    *m_session << "SET foreign_key_checks = 0;";
+    try {
+        *m_session << "SET foreign_key_checks = 0;";
 
-    m_actions_table->drop();
-    m_transactions_table->drop();
-    m_blocks_table->drop();
-    m_accounts_table->drop();
+        m_actions_table->drop();
+        m_transactions_table->drop();
+        m_blocks_table->drop();
+        m_accounts_table->drop();
 
-    *m_session << "SET foreign_key_checks = 1;";
+        *m_session << "SET foreign_key_checks = 1;";
 
-    m_accounts_table->create();
-    m_blocks_table->create();
-    m_transactions_table->create();
-    m_actions_table->create();
+        m_accounts_table->create();
+        m_blocks_table->create();
+        m_transactions_table->create();
+        m_actions_table->create();
 
-    m_accounts_table->add(system_account);
+        m_accounts_table->add(system_account);
+    } catch (const std::exception &ex) {
+        elog("${e}", ("e", ex.what())); // prevent crash
+    }
 }
 
 bool
